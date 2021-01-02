@@ -5,3 +5,5 @@ tidak semua file yang saya upload. Hanya file yang sekiranya penting untuk diedi
 manapun.
 ######
 Saya lebih sering mengedit file main.dart
+######
+file main.dart akan terus diupdate seiring dengan update tutorial
