@@ -1,0 +1,55 @@
+{
+	// Place your snippets for dart here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	"Stateless MyApp":{
+		"prefix": "stateless myapp",
+		"body": [
+			"class MyApp extends StatelessWidget {"
+			,"@override",
+			"\tWidget build(BuildContext context) {",
+				"\t\treturn MaterialApp(",
+				  "\t\t\tdebugShowCheckedModeBanner: false,",
+				  "\t\t\thome: $0,",
+				  
+				"\t\t);",
+			  "\t}",
+			"}",
+			
+		]
+	},
+	"Stateless Page":{
+		"prefix": "Stateless page",
+		"body": [
+			"class $1 extends StatelessWidget {",
+			"\t@override",
+			"\tWidget build(BuildContext context) {",
+			  "\t\treturn Scaffold(",
+				"\t\t\tappBar: $2 ,",
+				"\t\t\tbody: $0,",
+			  "\t\t);",
+			"\t}",
+		  "}",
+		]
+	},
+	"Field Get Set":{
+		"prefix": "field get set",
+		"body": [
+			"${1:fieldType} _${2:fieldName};",
+				"void ${3:setterName}(${1:fieldType} value) {_${2:fieldName} = value;}",
+				"${1:fieldType} ${4:getterName}() => _${2:fieldName};",
+			  "}",
+		]
+	}
+}
