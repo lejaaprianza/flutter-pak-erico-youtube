@@ -7,3 +7,5 @@ manapun.
 Saya lebih sering mengedit file main.dart
 ######
 file main.dart akan terus diupdate seiring dengan update tutorial
+######
+Note : jika ingin menggunakan foldernya maka direkomendasikan untuk menonton video tutorialnya juga
