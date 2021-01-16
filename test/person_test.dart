@@ -14,7 +14,5 @@ void main() {
       p.age = -5;
       expect(p.age, isPositive);
     });
-
-    test(description, body)
   });
 }
