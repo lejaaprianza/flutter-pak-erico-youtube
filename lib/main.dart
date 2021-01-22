@@ -2,24 +2,52 @@
 //import 'dart:math';
 //import 'dart:async';
 
-import 'dart:math';
+// import 'dart:math';
 
+// import 'dart:html';
+
+// import 'package:division/division.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hello_world/auth_services.dart';
+import 'package:hello_world/wrapper.dart';
+import 'package:provider/provider.dart';
+// import 'package:hello_world/ui/pages/main_page.dart';
+// import 'package:flutter_mobx/flutter_mobx.dart';
+// import 'package:hello_world/mobx/counter.dart';
+// import 'package:hello_world/custom_button.dart';
+// import 'package:hello_world/ui/styles/custom_styles.dart';
+// import 'ui/pages/main_page.dart';
+// import 'package:hello_world/ui/main_page3.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:hello_world/bloc/post_bloc.dart';
+// import 'package:hello_world/ui/main_page3.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:hello_world/bloc/color_bloc.dart';
+// import 'package:hello_world/bloc/counter_bloc.dart';
+// import 'package:hello_world/model/monster.dart';
 //import 'package:doc_comment/user_profile.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hello_world/color_bloc.dart';
-import 'package:bloc/bloc.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'color_bloc.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:hello_world/bloc/user_bloc.dart';
+// import 'package:hello_world/color_bloc.dart';
+// import 'package:bloc/bloc.dart';
+// import 'package:hydrated_bloc/hydrated_bloc.dart';
+// import 'package:hello_world/ui/main_page.dart';
+// import 'package:hello_world/ui/main_page2.dart';
+// import 'color_bloc.dart';
+// import 'package:hello_world/view/main_page.dart';
+// import 'package:path_provider/path_provider.dart' as pathProvider;
+// import 'package:hive/hive.dart';
+// import 'package:hello_world/model/monster.dart';
 // import 'package:hello_world/application_color.dart';
 // import 'package:hello_world/money.dart';
 // import 'package:hello_world/cart.dart';
-import 'package:hello_world/product_card.dart';
+// import 'package:hello_world/product_card.dart';
 //import 'package:provider/provider.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:hello_world/post_result_model.dart';
 //import 'package:hello_world/user_model1.dart';
-//port 'package:qrscan/qrscan.dart' as scanner;
+//port 'package:qrsca9n/qrscan.dart' as scanner;
 //import 'package:flutter/services.dart';
 //import 'package:qr_flutter/qr_flutter.dart';
 //import 'package:hello_world/colorful_button.dart';
@@ -38,7 +66,16 @@ import 'package:hello_world/product_card.dart';
 //   runApp(new MyApp());
 // }
 
+// final CounterMobx counter = CounterMobx();
 void main() => runApp(MyApp());
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   var appDocumentDirectory =
+//       await pathProvider.getApplicationDocumentsDirectory();
+//   Hive.init(appDocumentDirectory.path);
+//   Hive.registerAdapter(MonsterAdapter());
+//   runApp(MyApp());
+// }
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
 //   HydratedBloc.storage = await HydratedStorage.build();
@@ -49,106 +86,618 @@ void main() => runApp(MyApp());
 //   runApp(MyApp());
 // }
 
-// FLUTTER 52. ListView Builder + BLoC
+//FLutter 74. firebase authentication with anonymous account
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:
-          BlocProvider(builder: (context) => ProductBloc(), child: MainPage()),
-    );
-  }
-}
-
-class MainPage extends StatelessWidget {
-  final Random r = Random();
-  @override
-  Widget build(BuildContext context) {
-    ProductBloc bloc = BlocProvider.of<ProductBloc>(context);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xfff44336),
-        title: Text("Demo ListView Builder"),
-      ),
-      body: Column(
-        children: [
-          RaisedButton(
-            child: Text(
-              "Create Products",
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              bloc.dispatch(r.nextInt(4) + 2);
-            },
-            color: Color(0xfff44336),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          BlocBuilder<ProductBloc, List<Product>>(
-            builder: (context, products) => Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      (index == 0)
-                          ? SizedBox(
-                              width: 20,
-                            )
-                          : Container(),
-                      ProductCard(
-                        imageURL: products[index].imageURL,
-                        name: products[index].name,
-                        price: products[index].price.toString(),
-                        onAddCartTap: () {},
-                        onDecTap: () {},
-                        onIncTap: () {},
-                      ),
-                      SizedBox(
-                        width: 20,
-                      )
-                    ],
-                  );
-                },
-              ),
-            ),
-          )
-        ],
+    return StreamProvider.value(
+      value: AuthServices.firebaseUserStream,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Wrapper(),
       ),
     );
   }
 }
+//Flutter 73. Google Fonts
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//           textTheme: GoogleFonts.srirachaTextTheme()
+//               .copyWith(bodyText1: GoogleFonts.modak())),
+//       home: MainPage(),
+//     );
+//   }
+// }
 
-class Product {
-  String imageURL;
-  String name;
-  int price;
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     Color fontColor = const Color(0xffffb401);
+//     return Scaffold(
+//       backgroundColor: const Color(0xff1e252d),
+//       appBar: AppBar(
+//         backgroundColor: const Color(0xff282f37),
+//         title: Text("Google Fonts Demo"),
+//       ),
+//       body: Center(
+//         child: Column(
+//           children: [
+//             Text(
+//               "I'll keep learning Flutter!",
+//               style: TextStyle(color: fontColor),
+//               // style: GoogleFonts.sriracha(color: fontColor, fontSize: 25),
+//             ),
+//             Text("Mantap",
+//                 // style: GoogleFonts.sriracha(color: fontColor, fontSize: 25),
+//                 style: Theme.of(context)
+//                     .textTheme
+//                     .bodyText1
+//                     .copyWith(color: fontColor, fontSize: 25)),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-  Product({this.imageURL = "", this.name = "", this.price = 0});
-}
+//FLUTTER 69.Equatable
 
-class ProductBloc extends Bloc<int, List<Product>> {
-  @override
-  // TODO: implement initialState
-  List<Product> get initialState => [];
+// FLUTTER 67. Unit Testing
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container();
+//   }
+// }
+// FLUTTER 66. Accessibility - Semantics Widget (Flutter Interact '19)
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
 
-  @override
-  Stream<List<Product>> mapEventToState(int event) async* {
-    // TODO: implement mapEventToState
-    List<Product> products = [];
-    for (int i = 0; i < event; i++)
-      products.add(Product(
-          imageURL:
-              "https://5.imimg.com/data5/FJ/HI/MY-8155185/mixed-fruit-flavour-500x500.jpg",
-          name: "Produk " + i.toString(),
-          price: (i + 1) * 5000));
-    yield products;
-  }
-}
+// class MainPage extends StatefulWidget {
+//   @override
+//   _MainPageState createState() => _MainPageState();
+// }
+
+// class _MainPageState extends State<MainPage> {
+//   int number = 0;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Semantics(
+//             hidden: true,
+//             excludeSemantics: true,
+//             child: Text("Aplikasi Aksesibilitas")),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           setState(() {
+//             number++;
+//           });
+//         },
+//         child: Semantics(
+//             onTapHint: "menambahkan bilangan dengan satu",
+//             child: Icon(Icons.plus_one)),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Semantics(
+//               label:
+//                   "Ini adalah bilangan yang akan ditambahkan. bilangan saat ini adalah",
+//               child: Text(
+//                 number.toString(),
+//                 style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//FLUTTER 60. Extension
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// class MainPage extends StatelessWidget {
+//   final int x = -10;
+//   List<int> myList = [1, 2, 3];
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Extension Demo"),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text(
+//               // IntegerUtil.negate(x).toString(),
+//               // "Bilangan:" & x.negate().toString(),
+//               "Bilangan:" & myList.midElement.toString(),
+//               style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // class IntegerUtil {
+// //   static int negate(int number) {
+// //     return number * -1;
+// //   }
+// // }
+
+// extension ListExtension<T> on List {
+//   T get midElement =>
+//       (this.length == 0) ? null : this[(this.length / 2).floor()];
+// }
+
+// extension NumberExtension<T extends num> on num {
+//   T negate() => -1 * this;
+// }
+
+// // extension IntegerExtension on int {
+// //   int negate() => -1 * this;
+// // }
+
+// // extension DoubleExtension on double {
+// //   double negate() => -1 * this;
+// // }
+
+// extension StringExtension on String {
+//   String operator &(String other) => this + " " + other;
+// }
+
+// FLUTTER 62.  Division (Styling Widget Inspired by CSS)
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Txt("Demo Division",
+//             style: CustomStyles.txtStyle.clone()..fontSize(30)),
+//         backgroundColor: Colors.red[900],
+//       ),
+//       backgroundColor: Colors.grey[800],
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             // MyButton(),
+//             CustomButton(CustomStyles.buttonStyle),
+//             SizedBox(
+//               height: 20,
+//             ),
+//             CustomButton(CustomStyles.buttonStyle.clone()
+//               ..background.color(Colors.green[300])
+//               ..border(all: 3, color: Colors.green[900]))
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//FLUTTER 61. MOBX State Management
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("MOBX State Management Demo"),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Observer(
+//               builder: (context) => Text(
+//                 counter.value.toString(),
+//                 style: TextStyle(fontSize: 80),
+//               ),
+//             ),
+//             SizedBox(
+//               height: 40,
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 FloatingActionButton(
+//                   onPressed: () {
+//                     counter.decrement();
+//                   },
+//                   child: Icon(Icons.arrow_downward),
+//                 ),
+//                 SizedBox(
+//                   width: 20,
+//                 ),
+//                 FloatingActionButton(
+//                   onPressed: () {
+//                     counter.increment();
+//                   },
+//                   child: Icon(
+//                     Icons.arrow_upward,
+//                   ),
+//                 ),
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//FLUTTER 63. Widget Slider using Page View
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// FLUTTER 59. Flutter_bloc ver 1.0 & Bloc Visual Studio Code Plugin
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("flutter_bloc ver 1.0"),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text(
+//               "0",
+//               style: TextStyle(
+//                 fontSize: 80,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             SizedBox(
+//               height: 40,
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 FloatingActionButton(
+//                   onPressed: () {},
+//                   child: Icon(Icons.arrow_downward),
+//                 ),
+//                 SizedBox(
+//                   width: 20,
+//                 ),
+//                 FloatingActionButton(
+//                   onPressed: () {},
+//                   child: Icon(Icons.arrow_upward),
+//                 )
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// FLUTTER 58. Infinite (Auto Loading) List with BLoC
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: BlocProvider<PostBloc>(
+//         builder: (context) => PostBloc()..add(PostEvent()),
+//         child: MainPage(),
+//       ),
+//     );
+//   }
+// }
+// FLUTTER 57. Hive - Database in Pure Dart
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// FLUTTER 56. Drop Down Button
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// class MainPage extends StatefulWidget {
+//   @override
+//   _MainPageState createState() => _MainPageState();
+// }
+
+// class _MainPageState extends State<MainPage> {
+//   Person selectedPerson;
+//   List<Person> persons = [Person("Joni"), Person("Joko")];
+
+//   List<DropdownMenuItem> generateItems(List<Person> persons) {
+//     List<DropdownMenuItem> items = [];
+//     for (var item in persons) {
+//       items.add(DropdownMenuItem(
+//         child: Text(item.name),
+//         value: item,
+//       ));
+//     }
+//     return items;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Demo Dropdown"),
+//       ),
+//       body: Column(
+//         // mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Container(
+//             margin: EdgeInsets.all(20),
+//             child: DropdownButton(
+//               isExpanded: true,
+//               style: TextStyle(fontSize: 20, color: Colors.purple),
+//               value: selectedPerson,
+//               items: generateItems(persons),
+//               onChanged: (item) {
+//                 setState(() {
+//                   selectedPerson = item;
+//                 });
+//               },
+//             ),
+//           ),
+//           Text(
+//             (selectedPerson != null)
+//                 ? selectedPerson.name
+//                 : "Belum ada yang terpilih",
+//             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class Person {
+//   String name;
+//   Person(this.name);
+// }
+
+// FLUTTER 55. How to Make Dart Snippet to Code Faster
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MainPage(),
+//     );
+//   }
+// }
+
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Judul"),
+//       ),
+//       body: Container(),
+//     );
+//   }
+// }
+
+// class Person {
+//   int _umur;
+//   void setUmur(int value) {_umur = value;}
+//   int getUmur() => _umur;
+//   }
+// }
+
+// FLUTTER 54. Multi-BLoC in Multipage App
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiBlocProvider(
+//       providers: [
+//         BlocProvider<ColorBloc>(
+//           builder: (context) => ColorBloc(),
+//         ),
+//         BlocProvider<CounterBloc>(
+//           builder: (context) => CounterBloc(),
+//         ),
+//       ],
+//       child: MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         home: MainPage(),
+//       ),
+//     );
+//   }
+// }
+// FLUTTER 53. MVVM Architecture\
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: BlocProvider(
+//         builder: (context) => UserBloc(),
+//         child: MainPage(),
+//       ),
+//     );
+//   }
+// }
+// FLUTTER 52. ListView Builder + BLoC
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home:
+//           BlocProvider(builder: (context) => ProductBloc(), child: MainPage()),
+//     );
+//   }
+// }
+
+// class MainPage extends StatelessWidget {
+//   final Random r = Random();
+//   @override
+//   Widget build(BuildContext context) {
+//     ProductBloc bloc = BlocProvider.of<ProductBloc>(context);
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Color(0xfff44336),
+//         title: Text("Demo ListView Builder"),
+//       ),
+//       body: Column(
+//         children: [
+//           RaisedButton(
+//             child: Text(
+//               "Create Products",
+//               style: TextStyle(color: Colors.white),
+//             ),
+//             onPressed: () {
+//               bloc.dispatch(r.nextInt(4) + 2);
+//             },
+//             color: Color(0xfff44336),
+//           ),
+//           SizedBox(
+//             height: 20,
+//           ),
+//           BlocBuilder<ProductBloc, List<Product>>(
+//             builder: (context, products) => Expanded(
+//               child: ListView.builder(
+//                 scrollDirection: Axis.horizontal,
+//                 itemCount: products.length,
+//                 itemBuilder: (context, index) {
+//                   return Row(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       (index == 0)
+//                           ? SizedBox(
+//                               width: 20,
+//                             )
+//                           : Container(),
+//                       ProductCard(
+//                         imageURL: products[index].imageURL,
+//                         name: products[index].name,
+//                         price: products[index].price.toString(),
+//                         onAddCartTap: () {},
+//                         onDecTap: () {},
+//                         onIncTap: () {},
+//                       ),
+//                       SizedBox(
+//                         width: 20,
+//                       )
+//                     ],
+//                   );
+//                 },
+//               ),
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class Product {
+//   String imageURL;
+//   String name;
+//   int price;
+
+//   Product({this.imageURL = "", this.name = "", this.price = 0});
+// }
+
+// class ProductBloc extends Bloc<int, List<Product>> {
+//   @override
+//   // TODO: implement initialState
+//   List<Product> get initialState => [];
+
+//   @override
+//   Stream<List<Product>> mapEventToState(int event) async* {
+//     // TODO: implement mapEventToState
+//     List<Product> products = [];
+//     for (int i = 0; i < event; i++)
+//       products.add(Product(
+//           imageURL:
+//               "https://5.imimg.com/data5/FJ/HI/MY-8155185/mixed-fruit-flavour-500x500.jpg",
+//           name: "Produk " + i.toString(),
+//           price: (i + 1) * 5000));
+//     yield products;
+//   }
+// }
 
 // FLUTTER 51. Hydrated BLoC State Management (gagal)
 // class MyApp extends StatelessWidget {
@@ -1891,44 +2440,44 @@ class ProductBloc extends Bloc<int, List<Product>> {
 //                     ),
 //                   ),
 //                 ),
-//                 Container(
-//                   margin: EdgeInsets.fromLTRB(20, 0, 20, 30),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: <Widget>[
-//                       SizedBox(
-//                         width: MediaQuery.of(context).size.width * 0.5,
-//                         height: 40,
-//                         child: Container(
-//                           child: Material(
-//                             borderRadius: BorderRadius.circular(20),
-//                             color: Colors.transparent,
-//                             child: InkWell(
-//                               borderRadius: BorderRadius.circular(20),
-//                               splashColor: Colors.amber,
-//                               onTap: () {},
-//                               child: Center(
-//                                 child: Text(
-//                                   "SIGN IN",
-//                                   style: TextStyle(
-//                                       color: Colors.white,
-//                                       fontWeight: FontWeight.w700),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                           decoration: BoxDecoration(
-//                             borderRadius: BorderRadius.circular(20),
-//                             gradient: LinearGradient(
-//                                 colors: [
-//                                   Color(0xffb226b2),
-//                                   Color(0xffff4891),
-//                                 ],
-//                                 begin: Alignment.topCenter,
-//                                 end: Alignment.bottomCenter),
-//                           ),
-//                         ),
-//                       ),
+// Container(
+//   margin: EdgeInsets.fromLTRB(20, 0, 20, 30),
+//   child: Row(
+//     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//     children: <Widget>[
+//       SizedBox(
+//         width: MediaQuery.of(context).size.width * 0.5,
+//         height: 40,
+//         child: Container(
+//           child: Material(
+//             borderRadius: BorderRadius.circular(20),
+//             color: Colors.transparent,
+//             child: InkWell(
+//               borderRadius: BorderRadius.circular(20),
+//               splashColor: Colors.amber,
+//               onTap: () {},
+//               child: Center(
+//                 child: Text(
+//                   "SIGN IN",
+//                   style: TextStyle(
+//                       color: Colors.white,
+//                       fontWeight: FontWeight.w700),
+//                 ),
+//               ),
+//             ),
+//           ),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(20),
+//             gradient: LinearGradient(
+//                 colors: [
+//                   Color(0xffb226b2),
+//                   Color(0xffff4891),
+//                 ],
+//                 begin: Alignment.topCenter,
+//                 end: Alignment.bottomCenter),
+//           ),
+//         ),
+//       ),
 //                       FloatingActionButton(
 //                         onPressed: () {},
 //                         mini: true,
