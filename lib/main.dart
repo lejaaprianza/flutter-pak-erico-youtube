@@ -7,11 +7,18 @@
 // import 'dart:html';
 
 // import 'package:division/division.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/auth_services.dart';
+import 'package:hello_world/database_services.dart';
+import 'package:hello_world/main_page.dart';
 import 'package:hello_world/wrapper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shimmer/shimmer.dart';
 // import 'package:hello_world/ui/pages/main_page.dart';
 // import 'package:flutter_mobx/flutter_mobx.dart';
 // import 'package:hello_world/mobx/counter.dart';
@@ -86,19 +93,200 @@ void main() => runApp(MyApp());
 //   runApp(MyApp());
 // }
 
-//FLutter 74. firebase authentication with anonymous account
+//Flutter 78. Shimmer Effect
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider.value(
-      value: AuthServices.firebaseUserStream,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Wrapper(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MainPage(),
     );
   }
 }
+
+class MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Shimmer Demo"),
+      ),
+      body: Center(
+          child: Stack(
+        children: [
+          Container(
+            width: 200,
+            height: 300,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              image: DecorationImage(
+                  image: NetworkImage(
+                      "https://upload.wikimedia.org/wikipedia/commons/c/ce/180819_%EB%B8%94%EB%9E%99%ED%95%91%ED%81%AC_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C_%EC%BD%94%EC%97%91%EC%8A%A4_%EB%9D%BC%EC%9D%B4%EB%B8%8C%ED%94%84%EB%9D%BC%EC%9E%90_%EB%A6%AC%EC%82%AC.jpg"),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          Shimmer(
+            direction: ShimmerDirection.rtl,
+            // period: Duration(seconds: 5),
+            // loop: 2,
+            gradient: LinearGradient(
+                begin: Alignment(-1, 0.5),
+                end: Alignment(1, -0.5),
+                stops: [
+                  0.4,
+                  0.5,
+                  0.6
+                ],
+                colors: [
+                  Colors.white.withOpacity(0),
+                  Colors.white.withOpacity(0.5),
+                  Colors.white.withAlpha(0)
+                ]),
+            child: Container(
+              width: 200,
+              height: 300,
+              color: Colors.red,
+            ),
+          )
+        ],
+      )),
+    );
+  }
+}
+
+//Flutter 77. Firebase Storage & Image Picker
+// class MyApp extends StatefulWidget {
+//   @override
+//   _MyAppState createState() => _MyAppState();
+// }
+
+// class _MyAppState extends State<MyApp> {
+//   String imagePath;
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text("Firebase Storage Demo"),
+//         ),
+//         body: Container(
+//           child: Center(
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 (imagePath != null)
+//                     ? Container(
+//                         width: 200,
+//                         height: 200,
+//                         decoration: BoxDecoration(
+//                             shape: BoxShape.circle,
+//                             border: Border.all(color: Colors.black),
+//                             image: DecorationImage(
+//                                 image: NetworkImage(imagePath),
+//                                 fit: BoxFit.cover)))
+//                     : Container(
+//                         width: 200,
+//                         height: 200,
+//                         decoration: BoxDecoration(
+//                             shape: BoxShape.circle,
+//                             border: Border.all(color: Colors.black)),
+//                       ),
+//                 SizedBox(
+//                   height: 10,
+//                 ),
+//                 RaisedButton(
+//                   onPressed: () async {
+//                     AuthServices.signInAnonymous();
+//                   },
+//                   child: Text("Sign In"),
+//                 ),
+//                 RaisedButton(
+//                   onPressed: () async {
+//                     File file = await getImage();
+//                     imagePath = await DatabaseServices.uploadImage(file);
+
+//                     setState(() {});
+//                   },
+//                   child: Text("Upload Image"),
+//                 )
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// Future<File> getImage() async {
+//   return await ImagePicker.pickImage(source: ImageSource.gallery);
+// }
+
+//FLutter 74. firebase authentication with anonymous account
+// class MyApp extends StatelessWidget {
+//   String nama;
+//   int harga;
+//   @override
+//   Widget build(BuildContext context) {
+//     // return StreamProvider.value(
+//     //   value: AuthServices.firebaseUserStream,
+//     //   child: MaterialApp(
+//     //     debugShowCheckedModeBanner: false,
+//     //     home: Wrapper(),
+//     //   ),
+//     // );
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text("Firestore Demo"),
+//         ),
+//         body: Container(
+//           child: Center(
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 RaisedButton(
+//                     child: Text("Add Data"),
+//                     onPressed: () {
+//                       DatabaseServices.createOrUpdateProduct("1",
+//                           name: "Masker", price: 1000000);
+//                     }),
+//                 RaisedButton(
+//                     child: Text("Edit Data"),
+//                     onPressed: () {
+//                       DatabaseServices.createOrUpdateProduct("1",
+//                           name: "Masker Update", price: 2000000);
+//                     }),
+//                 RaisedButton(
+//                     child: Text("Get Data"),
+//                     onPressed: () async {
+//                       DocumentSnapshot snapshot =
+//                           await DatabaseServices.getProduct("1");
+//                       print(snapshot.data['nama']);
+//                       print(snapshot.data['harga']);
+//                       nama = await snapshot.data['nama'];
+//                       harga = await snapshot.data['harga'];
+//                     }),
+//                 RaisedButton(
+//                     child: Text("Delete Data"),
+//                     onPressed: () async {
+//                       await DatabaseServices.deleteProducts("1");
+//                     }),
+//                 // Container(
+//                 //   child: Text((nama != null)
+//                 //       ? nama + " " + harga.toString()
+//                 //       : "Tidak ada harga"),
+//                 // )
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 //Flutter 73. Google Fonts
 // class MyApp extends StatelessWidget {
 //   @override
